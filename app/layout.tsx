@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
+
+const suite = localFont({
+  src: "../public/fonts/SUITE-Variable.woff2",
+  weight: "100 900",
+  style: "normal",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Xiaoxiao Feed Generator",
@@ -13,7 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body className={suite.className}>
+        {children}
+      </body>
     </html>
   );
 }
