@@ -17,7 +17,9 @@ export default function FeedCanvas({
     <div
       ref={captureRef}
       className="w-[760px] bg-white"
-      style={{ fontFamily: "'SUITE Variable', sans-serif" }}
+      style={{
+        fontFamily: "'SUITE Variable', sans-serif",
+      }}
     >
       <main>
         {project.posts.map((post) => (
