@@ -155,10 +155,10 @@ export default function FeedPost({ post }: Props) {
               }
             >
               <CustomHeart
-                 size={24}
-                 filled={false}
-                 color="#7185be"
-                />
+                size={24}
+                filled={false}
+                color="#7185be"
+              />
 
               <span className="text-[22px] text-[#7185be]">
                 {post.likedBy}
