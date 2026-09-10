@@ -40,63 +40,61 @@ export async function exportElementAsImage(
       );
     }
 
-    const isIOS =
-      /iPad|iPhone|iPod/.test(
-        navigator.userAgent
+    const response =
+      await fetch(dataUrl);
+
+    const blob =
+      await response.blob();
+
+    const mimeType =
+      type === "png"
+        ? "image/png"
+        : "image/jpeg";
+
+    const file =
+      new File(
+        [blob],
+        filename,
+        {
+          type: mimeType,
+        }
       );
 
-    if (isIOS) {
-      const newWindow =
-        window.open();
+    // 모바일에서 파일 공유 기능을 지원하면
+    // 시스템 공유창을 우선 사용
+    if (
+      navigator.share &&
+      navigator.canShare &&
+      navigator.canShare({
+        files: [file],
+      })
+    ) {
+      try {
+        await navigator.share({
+          files: [file],
+        });
 
-      if (newWindow) {
-        newWindow.document.write(`
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <meta
-                name="viewport"
-                content="width=device-width, initial-scale=1"
-              />
-              <title>${filename}</title>
-              <style>
-                html, body {
-                  margin: 0;
-                  padding: 0;
-                  background: #000;
-                }
-
-                img {
-                  display: block;
-                  width: 100%;
-                  height: auto;
-                }
-              </style>
-            </head>
-            <body>
-              <img
-                src="${dataUrl}"
-                alt="${filename}"
-              />
-            </body>
-          </html>
-        `);
-
-        newWindow.document.close();
-      } else {
-        window.location.href =
-          dataUrl;
+        return;
+      } catch (error) {
+        // 사용자가 공유창을 닫은 경우 등은
+        // 아래 일반 다운로드 방식으로 진행
+        console.log(
+          "공유 기능 사용 실패:",
+          error
+        );
       }
-
-      return;
     }
+
+    // 일반 브라우저용 다운로드
+    const blobUrl =
+      URL.createObjectURL(blob);
 
     const link =
       document.createElement(
         "a"
       );
 
-    link.href = dataUrl;
+    link.href = blobUrl;
     link.download = filename;
 
     document.body.appendChild(
@@ -108,6 +106,12 @@ export async function exportElementAsImage(
     document.body.removeChild(
       link
     );
+
+    setTimeout(() => {
+      URL.revokeObjectURL(
+        blobUrl
+      );
+    }, 1000);
   } catch (error) {
     console.error(
       "이미지 저장 실패:",

@@ -11,7 +11,7 @@ const defaultProfile =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(`
     <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
-      <rect width="100" height="100" rx="18" fill="#dbe4ff"/>
+      <rect width="100" height="100" fill="#dbe4ff"/>
       <circle cx="50" cy="35" r="16" fill="#8598e5"/>
       <rect x="25" y="57" width="50" height="24" fill="#8598e5"/>
     </svg>
