@@ -6,6 +6,8 @@ export async function exportElementAsImage(
   filename: string
 ) {
   try {
+    await document.fonts.ready;
+
     const options = {
       pixelRatio: 2,
       cacheBust: true,
@@ -40,9 +42,7 @@ export async function exportElementAsImage(
   } catch (error) {
     console.error("이미지 저장 실패:", error);
 
-    alert(
-      "이미지 저장 중 오류가 발생했습니다. 개발자 도구 콘솔을 확인해주세요."
-    );
+    alert("이미지 저장 중 오류가 발생했습니다.");
 
     throw error;
   }
