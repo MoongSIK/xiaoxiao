@@ -10,9 +10,6 @@ export async function exportElementAsImage(
       pixelRatio: 2,
       cacheBust: true,
       backgroundColor: "#ffffff",
-
-      // 외부 웹폰트 처리 때문에 html-to-image가 실패하는 것을 방지
-      skipFonts: true,
     };
 
     let dataUrl: string;
@@ -26,21 +23,17 @@ export async function exportElementAsImage(
       });
     }
 
-    // data URL을 Blob으로 변환
     const response = await fetch(dataUrl);
     const blob = await response.blob();
 
     const blobUrl = URL.createObjectURL(blob);
 
     const link = document.createElement("a");
-
     link.href = blobUrl;
     link.download = filename;
 
     document.body.appendChild(link);
-
     link.click();
-
     document.body.removeChild(link);
 
     URL.revokeObjectURL(blobUrl);
