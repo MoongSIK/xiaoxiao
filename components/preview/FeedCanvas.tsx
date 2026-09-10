@@ -18,9 +18,7 @@ export default function FeedCanvas({
       ref={captureRef}
       className="w-[760px] bg-white"
       style={{
-        fontFamily: "'SUITE Variable', sans-serif",
-        fontFeatureSettings: "normal",
-        fontKerning: "normal",
+        fontFamily: "'SUITE', sans-serif",
       }}
     >
       <main>
