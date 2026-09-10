@@ -1,20 +1,32 @@
 "use client";
 
-import { FeedProject, FeedPost } from "@/types/feed";
-import { createId } from "@/lib/utils";
-import { downloadTextFile } from "@/lib/file";
+import {
+  Moon,
+  Sun,
+} from "lucide-react";
 
+import {
+  FeedProject,
+  FeedPost,
+} from "@/types/feed";
+
+import { createId } from "@/lib/utils";
 import PostEditor from "./PostEditor";
 
 type Props = {
   project: FeedProject;
-  onChange: (project: FeedProject) => void;
+  onChange: (
+    project: FeedProject
+  ) => void;
+  darkMode: boolean;
+  onToggleDarkMode: () => void;
 };
 
 function createEmptyPost(): FeedPost {
   return {
     id: createId("post"),
-    author: "이름",
+    author: "소휘",
+
     profileImage:
       "data:image/svg+xml;utf8," +
       encodeURIComponent(`
@@ -24,6 +36,7 @@ function createEmptyPost(): FeedPost {
           <rect x="25" y="57" width="50" height="24" fill="#8598e5"/>
         </svg>
       `),
+
     content: "",
     postImage: "",
     liked: false,
@@ -35,11 +48,16 @@ function createEmptyPost(): FeedPost {
 export default function EditorPanel({
   project,
   onChange,
+  darkMode,
+  onToggleDarkMode,
 }: Props) {
   const addPost = () => {
     onChange({
       ...project,
-      posts: [...project.posts, createEmptyPost()],
+      posts: [
+        ...project.posts,
+        createEmptyPost(),
+      ],
     });
   };
 
@@ -49,101 +67,117 @@ export default function EditorPanel({
   ) => {
     onChange({
       ...project,
-      posts: project.posts.map((post) =>
-        post.id === id ? nextPost : post
+      posts: project.posts.map(
+        (post) =>
+          post.id === id
+            ? nextPost
+            : post
       ),
     });
   };
 
-  const deletePost = (id: string) => {
+  const deletePost = (
+    id: string
+  ) => {
     onChange({
       ...project,
-      posts: project.posts.filter(
-        (post) => post.id !== id
-      ),
+      posts:
+        project.posts.filter(
+          (post) =>
+            post.id !== id
+        ),
     });
-  };
-
-  const saveJson = () => {
-    downloadTextFile(
-      "xiaoxiao-project.json",
-      JSON.stringify(project, null, 2)
-    );
-  };
-
-  const loadJson = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = e.target.files?.[0];
-
-    if (!file) return;
-
-    try {
-      const text = await file.text();
-      const parsed = JSON.parse(text) as FeedProject;
-
-      onChange(parsed);
-    } catch {
-      alert("올바른 JSON 파일이 아닙니다.");
-    }
-
-    e.target.value = "";
   };
 
   return (
-    <div className="h-full min-h-0 overflow-y-auto p-4 pb-20">
+    <div className="p-4 pb-20 xl:h-full xl:min-h-0 xl:overflow-y-auto">
+
       <div className="flex flex-col gap-4">
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-          <h2 className="mb-4 text-lg font-bold">
-            편집 패널
-          </h2>
+        {/* 편집 패널 상단 */}
+        <div
+          className={`rounded-2xl border p-4 shadow-sm ${
+            darkMode
+              ? "border-[#3a3a3a] bg-[#222222]"
+              : "border-slate-200 bg-white"
+          }`}
+        >
 
-          <div className="flex flex-col gap-4">
+          <div className="mb-4 flex items-center justify-between">
+
+            <h2
+              className={`text-lg font-bold ${
+                darkMode
+                  ? "text-white"
+                  : "text-slate-800"
+              }`}
+            >
+              편집 패널
+            </h2>
+
             <button
               type="button"
-              onClick={addPost}
-              className="rounded-xl bg-slate-800 px-4 py-3 font-semibold text-white"
+              onClick={
+                onToggleDarkMode
+              }
+              aria-label={
+                darkMode
+                  ? "라이트 모드"
+                  : "다크 모드"
+              }
+              className={`flex h-[38px] w-[38px] items-center justify-center rounded-lg border ${
+                darkMode
+                  ? "border-[#555555] bg-[#303030] text-white"
+                  : "border-slate-300 bg-white text-slate-700"
+              }`}
             >
-              + 게시물 추가
+              {darkMode ? (
+                <Sun size={20} />
+              ) : (
+                <Moon size={20} />
+              )}
             </button>
 
-            <button
-              type="button"
-              onClick={saveJson}
-              className="rounded-xl bg-slate-100 px-4 py-3 font-semibold"
-            >
-              JSON 저장
-            </button>
-
-            <div>
-              <label className="mb-2 block text-sm font-semibold">
-                JSON 불러오기
-              </label>
-
-              <input
-                type="file"
-                accept=".json,application/json"
-                onChange={loadJson}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-              />
-            </div>
           </div>
+
+          <button
+            type="button"
+            onClick={addPost}
+            className={`w-full rounded-xl px-4 py-3 font-semibold ${
+              darkMode
+                ? "bg-[#eeeeee] text-black"
+                : "bg-slate-800 text-white"
+            }`}
+          >
+            + 게시물 추가
+          </button>
+
         </div>
 
-        {project.posts.map((post, index) => (
-          <PostEditor
-            key={post.id}
-            post={post}
-            index={index}
-            onChange={(nextPost) =>
-              updatePost(post.id, nextPost)
-            }
-            onDelete={() =>
-              deletePost(post.id)
-            }
-          />
-        ))}
+        {/* 게시물 편집 */}
+        {project.posts.map(
+          (post, index) => (
+            <PostEditor
+              key={post.id}
+              post={post}
+              index={index}
+              darkMode={darkMode}
+              onChange={(
+                nextPost
+              ) =>
+                updatePost(
+                  post.id,
+                  nextPost
+                )
+              }
+              onDelete={() =>
+                deletePost(
+                  post.id
+                )
+              }
+            />
+          )
+        )}
 
       </div>
     </div>

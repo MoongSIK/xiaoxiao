@@ -17,13 +17,8 @@ export default function FeedCanvas({
     <div
       ref={captureRef}
       className="w-[760px] bg-white"
+      style={{ fontFamily: "'SUITE Variable', sans-serif" }}
     >
-      <header className="flex h-[64px] items-center border-b border-[#eeeeee] px-6">
-        <div className="text-[42px] font-light leading-none text-[#111111]">
-          ‹
-        </div>
-      </header>
-
       <main>
         {project.posts.map((post) => (
           <FeedPost
