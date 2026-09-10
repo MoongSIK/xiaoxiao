@@ -12,19 +12,6 @@ export async function exportElementAsImage(
   try {
     await document.fonts.ready;
 
-    const userAgent = navigator.userAgent;
-
-    const isAndroid =
-      /Android/i.test(userAgent);
-
-    // Android 인앱 브라우저에서
-    // async 작업 후 window.open이 차단되는 것을 방지
-    let androidWindow: Window | null = null;
-
-    if (isAndroid) {
-      androidWindow = window.open("", "_blank");
-    }
-
     const fontEmbedCSS =
       await getFontEmbedCSS(element);
 
@@ -73,7 +60,7 @@ export async function exportElementAsImage(
         }
       );
 
-    // 1. 공유 기능을 지원하는 모바일 브라우저
+    // 모바일에서 시스템 공유 기능 우선 사용
     if (
       navigator.share &&
       navigator.canShare &&
@@ -81,11 +68,6 @@ export async function exportElementAsImage(
         files: [file],
       })
     ) {
-      // 미리 열어둔 Android 창은 필요 없으므로 닫기
-      if (androidWindow) {
-        androidWindow.close();
-      }
-
       try {
         await navigator.share({
           files: [file],
@@ -94,37 +76,13 @@ export async function exportElementAsImage(
         return;
       } catch (error) {
         console.log(
-          "파일 공유 실패:",
+          "공유 기능 사용 실패:",
           error
         );
       }
     }
 
-    // 2. Android 인앱 브라우저 fallback
-    if (isAndroid) {
-      const blobUrl =
-        URL.createObjectURL(blob);
-
-      if (androidWindow) {
-        androidWindow.location.href =
-          blobUrl;
-      } else {
-        window.location.href =
-          blobUrl;
-      }
-
-      // 바로 revoke 하면 이미지가 안 열릴 수 있으므로
-      // 충분히 기다린 뒤 해제
-      setTimeout(() => {
-        URL.revokeObjectURL(
-          blobUrl
-        );
-      }, 60000);
-
-      return;
-    }
-
-    // 3. PC 등 일반 브라우저 다운로드
+    // 일반 다운로드 fallback
     const blobUrl =
       URL.createObjectURL(blob);
 
@@ -148,7 +106,7 @@ export async function exportElementAsImage(
       URL.revokeObjectURL(
         blobUrl
       );
-    }, 1000);
+    }, 5000);
   } catch (error) {
     console.error(
       "이미지 저장 실패:",
