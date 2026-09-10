@@ -25,7 +25,7 @@ type Props = {
 function createEmptyPost(): FeedPost {
   return {
     id: createId("post"),
-    author: "소휘",
+    author: "",
 
     profileImage:
       "data:image/svg+xml;utf8," +

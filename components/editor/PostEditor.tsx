@@ -31,7 +31,7 @@ export default function PostEditor({
   const addComment = () => {
     const newComment: FeedComment = {
       id: createId("comment"),
-      author: "뭉이",
+      author: "",
       content: "",
       isReply: false,
       replyTo: "",
@@ -257,7 +257,7 @@ export default function PostEditor({
                         .value,
                   })
                 }
-                placeholder="예: 뭉이"
+                placeholder="예: 냥이"
                 className={`w-full rounded-lg border px-3 py-2 ${inputClass}`}
               />
             </div>
