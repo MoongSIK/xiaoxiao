@@ -8,7 +8,7 @@ import {
 import { createId } from "@/lib/utils";
 
 import CommentEditor from "./CommentEditor";
-import FilePicker from "./FilePicker";
+import PostImagePicker from "./PostImagePicker";
 import ProfileImagePicker from "./ProfileImagePicker";
 
 type Props = {
@@ -179,8 +179,7 @@ export default function PostEditor({
         </div>
 
         {/* 게시물 이미지 */}
-        <FilePicker
-          label="게시물 이미지"
+        <PostImagePicker
           darkMode={darkMode}
           onChange={(value) =>
             onChange({

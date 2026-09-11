@@ -16,16 +16,21 @@ export default function FeedCanvas({
   return (
     <div
       ref={captureRef}
-      className="w-[760px] bg-white"
-      style={{ fontFamily: "'SUITE Variable', sans-serif" }}
+      className="w-[760px] bg-[#fafafa]"
+      style={{
+        fontFamily:
+          "'SUITE Variable', sans-serif",
+      }}
     >
       <main>
-        {project.posts.map((post) => (
-          <FeedPost
-            key={post.id}
-            post={post}
-          />
-        ))}
+        {project.posts.map(
+          (post) => (
+            <FeedPost
+              key={post.id}
+              post={post}
+            />
+          )
+        )}
       </main>
     </div>
   );

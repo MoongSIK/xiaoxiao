@@ -1,6 +1,7 @@
 "use client";
 
 import { MessageCircle } from "lucide-react";
+
 import {
   FeedComment,
   FeedPost as FeedPostType,
@@ -24,7 +25,11 @@ function CustomHeart({
       width={size}
       height={size}
       viewBox="0 0 40 40"
-      fill={filled ? color : "none"}
+      fill={
+        filled
+          ? color
+          : "none"
+      }
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
@@ -55,15 +60,15 @@ function renderCommentAuthor(
   ) {
     return (
       <>
-        <span className="text-[22px] text-[#7185be]">
+        <span className="text-[23px] text-[#7185be]">
           {comment.author}
         </span>
 
-        <span className="text-[22px] text-[#565656]">
+        <span className="text-[23px] text-[#565656]">
           답장
         </span>
 
-        <span className="text-[22px] text-[#7185be]">
+        <span className="text-[23px] text-[#7185be]">
           {comment.replyTo}
         </span>
       </>
@@ -71,7 +76,7 @@ function renderCommentAuthor(
   }
 
   return (
-    <span className="text-[22px] text-[#7185be]">
+    <span className="text-[23px] text-[#7185be]">
       {comment.author}
     </span>
   );
@@ -88,19 +93,26 @@ export default function FeedPost({
     post.likedBy.trim().length > 0;
 
   const showReactionBox =
-    hasComments || hasLikeInfo;
+    hasComments ||
+    hasLikeInfo;
 
   return (
     <article className="border-b border-[#e8e8e8] px-7 py-8 last:border-b-0">
+
       <div className="flex gap-5">
+
         {/* 프로필 이미지 */}
         {post.profileImage && (
           <img
-            src={post.profileImage}
+            src={
+              post.profileImage
+            }
             alt=""
             width={63}
             height={63}
-            draggable={false}
+            draggable={
+              false
+            }
             decoding="sync"
             className="h-[63px] w-[63px] shrink-0 rounded-[3px] object-cover"
           />
@@ -108,36 +120,52 @@ export default function FeedPost({
 
         {/* 게시물 내용 */}
         <div className="min-w-0 flex-1">
+
           {/* 작성자 */}
-          <div className="mb-0.5 text-[24px] font-medium text-[#7185be]">
+          <div className="text-[25px] font-medium leading-[1.05] text-[#7185be]">
             {post.author}
           </div>
 
           {/* 본문 */}
-          <div className="whitespace-pre-wrap break-words text-[22px] leading-[1.5] text-[#565656]">
+          <div className="mt-[12px] whitespace-pre-wrap break-words text-[23px] leading-[1.25] text-[#565656]">
             {post.content}
           </div>
 
           {/* 게시물 첨부 이미지 */}
           {post.postImage && (
             <div className="mt-4">
-              <img
-                src={post.postImage}
-                alt=""
-                draggable={false}
-                decoding="sync"
-                className="max-h-[520px] w-full max-w-[470px] object-cover"
-              />
+
+              <div className="h-[335px] w-[470px] overflow-hidden bg-white">
+
+                <img
+                  src={
+                    post.postImage
+                  }
+                  alt=""
+                  draggable={
+                    false
+                  }
+                  decoding="sync"
+                  className="h-full w-full object-cover"
+                />
+
+              </div>
+
             </div>
           )}
+
         </div>
+
       </div>
 
       {/* 좋아요 / 댓글 아이콘 */}
-      <div className="mt-5 flex items-center justify-end gap-5 pr-6">
+      <div className="mt-2 flex items-center justify-end gap-5 pr-6">
+
         <CustomHeart
           size={44}
-          filled={post.liked}
+          filled={
+            post.liked
+          }
           color={
             post.liked
               ? "#ef8fa1"
@@ -163,12 +191,14 @@ export default function FeedPost({
               "scaleX(-1)",
           }}
         />
+
       </div>
 
       {/* 좋아요 / 댓글 회색 박스 */}
       {showReactionBox && (
         <div className="ml-[83px] mr-6 mt-2 rounded-[8px] bg-[#f4f4f4] px-4 py-2">
-          {/* 좋아요 정보 */}
+
+          {/* 좋아요 */}
           {hasLikeInfo && (
             <div
               className={
@@ -177,15 +207,21 @@ export default function FeedPost({
                   : "flex items-center gap-2"
               }
             >
+
               <CustomHeart
                 size={24}
-                filled={false}
+                filled={
+                  false
+                }
                 color="#7185be"
               />
 
-              <span className="text-[22px] text-[#7185be]">
-                {post.likedBy}
+              <span className="text-[23px] text-[#7185be]">
+                {
+                  post.likedBy
+                }
               </span>
+
             </div>
           )}
 
@@ -194,22 +230,30 @@ export default function FeedPost({
             post.comments.map(
               (comment) => (
                 <div
-                  key={comment.id}
+                  key={
+                    comment.id
+                  }
                   className="mb-2 last:mb-0"
                 >
+
                   {renderCommentAuthor(
                     comment
                   )}
 
-                  <span className="text-[22px] leading-[1.6] text-[#555555]">
+                  <span className="text-[23px] leading-[1.6] text-[#555555]">
                     {" : "}
-                    {comment.content}
+                    {
+                      comment.content
+                    }
                   </span>
+
                 </div>
               )
             )}
+
         </div>
       )}
+
     </article>
   );
 }
