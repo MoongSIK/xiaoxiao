@@ -88,8 +88,13 @@ export default function FeedPost({
   const hasComments =
     post.comments.length > 0;
 
+  /*
+   * 핵심 변경
+   *
+   * 내가 좋아요를 눌렀는지(post.liked)와
+   * 좋아요 누른 사람이 있는지(likedBy)를 분리.
+   */
   const hasLikeInfo =
-    post.liked &&
     post.likedBy.trim().length > 0;
 
   const showReactionBox =
@@ -127,7 +132,7 @@ export default function FeedPost({
           </div>
 
           {/* 본문 */}
-          <div className="mt-[12px] whitespace-pre-wrap break-words text-[23px] leading-[1.25] text-[#565656]">
+          <div className="mt-[4px] whitespace-pre-wrap break-words text-[23px] leading-[1.25] text-[#565656]">
             {post.content}
           </div>
 
@@ -161,6 +166,7 @@ export default function FeedPost({
       {/* 좋아요 / 댓글 아이콘 */}
       <div className="mt-2 flex items-center justify-end gap-5 pr-6">
 
+        {/* 내 좋아요 여부만 반영 */}
         <CustomHeart
           size={44}
           filled={
@@ -198,7 +204,7 @@ export default function FeedPost({
       {showReactionBox && (
         <div className="ml-[83px] mr-6 mt-2 rounded-[8px] bg-[#f4f4f4] px-4 py-2">
 
-          {/* 좋아요 */}
+          {/* 좋아요 내역 */}
           {hasLikeInfo && (
             <div
               className={

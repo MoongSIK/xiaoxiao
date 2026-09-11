@@ -93,6 +93,8 @@ export default function PostEditor({
           : "border-slate-200 bg-white"
       }`}
     >
+
+      {/* 상단 */}
       <div className="mb-4 flex items-center justify-between">
 
         <h3
@@ -123,7 +125,9 @@ export default function PostEditor({
 
         {/* 프로필 이미지 */}
         <ProfileImagePicker
-          darkMode={darkMode}
+          darkMode={
+            darkMode
+          }
           onChange={(value) =>
             onChange({
               ...post,
@@ -135,6 +139,7 @@ export default function PostEditor({
 
         {/* 작성자 */}
         <div>
+
           <label
             className={`mb-1 block text-sm font-semibold ${labelClass}`}
           >
@@ -142,7 +147,9 @@ export default function PostEditor({
           </label>
 
           <input
-            value={post.author}
+            value={
+              post.author
+            }
             onChange={(e) =>
               onChange({
                 ...post,
@@ -152,10 +159,12 @@ export default function PostEditor({
             }
             className={`w-full rounded-lg border px-3 py-2 ${inputClass}`}
           />
+
         </div>
 
         {/* 본문 */}
         <div>
+
           <label
             className={`mb-1 block text-sm font-semibold ${labelClass}`}
           >
@@ -176,11 +185,14 @@ export default function PostEditor({
             rows={5}
             className={`w-full rounded-lg border px-3 py-2 ${inputClass}`}
           />
+
         </div>
 
         {/* 게시물 이미지 */}
         <PostImagePicker
-          darkMode={darkMode}
+          darkMode={
+            darkMode
+          }
           onChange={(value) =>
             onChange({
               ...post,
@@ -190,6 +202,7 @@ export default function PostEditor({
           }
         />
 
+        {/* 게시물 이미지 제거 */}
         {post.postImage && (
           <button
             type="button"
@@ -212,6 +225,7 @@ export default function PostEditor({
         {/* 좋아요 */}
         <div className="flex flex-col gap-3">
 
+          {/* 내가 좋아요 눌렀는지 */}
           <label
             className={`flex items-center gap-2 rounded-lg border p-3 text-sm ${
               darkMode
@@ -234,37 +248,38 @@ export default function PostEditor({
             />
 
             좋아요 누르기
+
           </label>
 
-          {post.liked && (
-            <div>
-              <label
-                className={`mb-1 block text-sm font-semibold ${labelClass}`}
-              >
-                좋아요 누른 사람
-              </label>
+          {/* 좋아요 누른 사람 */}
+          <div>
 
-              <input
-                value={
-                  post.likedBy
-                }
-                onChange={(e) =>
-                  onChange({
-                    ...post,
-                    likedBy:
-                      e.target
-                        .value,
-                  })
-                }
-                placeholder="예: 냥이"
-                className={`w-full rounded-lg border px-3 py-2 ${inputClass}`}
-              />
-            </div>
-          )}
+            <label
+              className={`mb-1 block text-sm font-semibold ${labelClass}`}
+            >
+              좋아요 누른 사람
+            </label>
+
+            <input
+              value={
+                post.likedBy
+              }
+              onChange={(e) =>
+                onChange({
+                  ...post,
+                  likedBy:
+                    e.target.value,
+                })
+              }
+              placeholder="예: 냥이, 송이"
+              className={`w-full rounded-lg border px-3 py-2 ${inputClass}`}
+            />
+
+          </div>
 
         </div>
 
-        {/* 댓글 목록 */}
+        {/* 댓글 목록 제목 */}
         <div className="flex items-center justify-between">
 
           <strong
@@ -279,7 +294,9 @@ export default function PostEditor({
 
           <button
             type="button"
-            onClick={addComment}
+            onClick={
+              addComment
+            }
             className={`rounded-lg px-3 py-2 text-sm font-semibold ${
               darkMode
                 ? "bg-[#eeeeee] text-black"
@@ -326,6 +343,7 @@ export default function PostEditor({
         </div>
 
       </div>
+
     </div>
   );
 }
