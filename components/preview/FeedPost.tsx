@@ -1,7 +1,10 @@
 "use client";
 
 import { MessageCircle } from "lucide-react";
-import { FeedComment, FeedPost as FeedPostType } from "@/types/feed";
+import {
+  FeedComment,
+  FeedPost as FeedPostType,
+} from "@/types/feed";
 
 type Props = {
   post: FeedPostType;
@@ -43,8 +46,13 @@ function CustomHeart({
   );
 }
 
-function renderCommentAuthor(comment: FeedComment) {
-  if (comment.isReply && comment.replyTo.trim()) {
+function renderCommentAuthor(
+  comment: FeedComment
+) {
+  if (
+    comment.isReply &&
+    comment.replyTo.trim()
+  ) {
     return (
       <>
         <span className="text-[22px] text-[#7185be]">
@@ -69,11 +77,15 @@ function renderCommentAuthor(comment: FeedComment) {
   );
 }
 
-export default function FeedPost({ post }: Props) {
-  const hasComments = post.comments.length > 0;
+export default function FeedPost({
+  post,
+}: Props) {
+  const hasComments =
+    post.comments.length > 0;
 
   const hasLikeInfo =
-    post.liked && post.likedBy.trim().length > 0;
+    post.liked &&
+    post.likedBy.trim().length > 0;
 
   const showReactionBox =
     hasComments || hasLikeInfo;
@@ -81,17 +93,21 @@ export default function FeedPost({ post }: Props) {
   return (
     <article className="border-b border-[#e8e8e8] px-7 py-8 last:border-b-0">
       <div className="flex gap-5">
-
         {/* 프로필 이미지 */}
-        <img
-          src={post.profileImage}
-          alt=""
-          className="h-[63px] w-[63px] shrink-0 rounded-[3px] object-cover"
-        />
+        {post.profileImage && (
+          <img
+            src={post.profileImage}
+            alt=""
+            width={63}
+            height={63}
+            draggable={false}
+            decoding="sync"
+            className="h-[63px] w-[63px] shrink-0 rounded-[3px] object-cover"
+          />
+        )}
 
         {/* 게시물 내용 */}
         <div className="min-w-0 flex-1">
-
           {/* 작성자 */}
           <div className="mb-0.5 text-[24px] font-medium text-[#7185be]">
             {post.author}
@@ -108,43 +124,50 @@ export default function FeedPost({ post }: Props) {
               <img
                 src={post.postImage}
                 alt=""
+                draggable={false}
+                decoding="sync"
                 className="max-h-[520px] w-full max-w-[470px] object-cover"
               />
             </div>
           )}
-
         </div>
       </div>
 
       {/* 좋아요 / 댓글 아이콘 */}
       <div className="mt-5 flex items-center justify-end gap-5 pr-6">
-
         <CustomHeart
           size={44}
           filled={post.liked}
-          color={post.liked ? "#ef8fa1" : "#a6a6a6"}
+          color={
+            post.liked
+              ? "#ef8fa1"
+              : "#a6a6a6"
+          }
         />
 
         <MessageCircle
           size={38}
           strokeWidth={1.5}
-          fill={hasComments ? "#ef8fa1" : "none"}
+          fill={
+            hasComments
+              ? "#ef8fa1"
+              : "none"
+          }
           className={
             hasComments
               ? "text-[#ef8fa1]"
               : "text-[#a6a6a6]"
           }
           style={{
-            transform: "scaleX(-1)",
+            transform:
+              "scaleX(-1)",
           }}
         />
-
       </div>
 
       {/* 좋아요 / 댓글 회색 박스 */}
       {showReactionBox && (
         <div className="ml-[83px] mr-6 mt-2 rounded-[8px] bg-[#f4f4f4] px-4 py-2">
-
           {/* 좋아요 정보 */}
           {hasLikeInfo && (
             <div
@@ -168,20 +191,23 @@ export default function FeedPost({ post }: Props) {
 
           {/* 댓글 */}
           {hasComments &&
-            post.comments.map((comment) => (
-              <div
-                key={comment.id}
-                className="mb-2 last:mb-0"
-              >
-                {renderCommentAuthor(comment)}
+            post.comments.map(
+              (comment) => (
+                <div
+                  key={comment.id}
+                  className="mb-2 last:mb-0"
+                >
+                  {renderCommentAuthor(
+                    comment
+                  )}
 
-                <span className="text-[22px] leading-[1.6] text-[#555555]">
-                  {" : "}
-                  {comment.content}
-                </span>
-              </div>
-            ))}
-
+                  <span className="text-[22px] leading-[1.6] text-[#555555]">
+                    {" : "}
+                    {comment.content}
+                  </span>
+                </div>
+              )
+            )}
         </div>
       )}
     </article>
